@@ -1,0 +1,23 @@
+.blok
+    .info
+        .adnotacja
+            h2 Nowicjusz
+            p.
+                Zakładamy, że gracz sztuczny nie wie nic o grze i nie ma możliwości rozróżnienia, 
+                która akcja jest lepsza od drugiej. 
+
+
+    pre
+        code.language-javascript.
+
+            function takeABlindMove(turn) {
+                var available = game.currentState.emptyCells();
+                var randomCell = available[Math.floor(Math.random() * available.length)];
+                var action = new AIAction(randomCell);
+
+                var next = action.applyTo(game.currentState);
+
+                ui.insertAt(randomCell, turn);
+
+                game.advanceTo(next);
+            }

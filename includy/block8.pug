@@ -1,0 +1,39 @@
+.blok
+    .info
+        .adnotacja
+            h2 Tworzenie poziomu mistrza.
+            p.
+                Gracz, który zawsze wykonuje optymalny ruch, jest bez wątpienia mistrzem. 
+                W związku z tym implementujemy funkcję takeAMasterMove, aby umożliwić algorytmowi zawsze wybrać optymalne działanie. Jest to najtrudniejszy poziom gry, ponieważ można udowodnić, 
+                że gracz, który gra optymalnie przez cały czas, nie może przegrać. 
+                Nasza najlepsza szansa na tym poziomie prowadzi do remisu.
+
+
+    pre
+        code.language-javascript.
+            //tworzy z komputera - mistrza
+            function takeAMasterMove(turn) {
+                var available = game.currentState.emptyCells();
+
+                //kalkuluje wyniki dla każdej możliwej akcji.
+                var availableActions = available.map(function(pos) {
+                    var action =  new AIAction(pos); //create the action object
+
+                    //nowy status poprzez podjęcie ruchu.
+                    var next = action.applyTo(game.currentState);
+                    action.minimaxVal = minimaxValue(next);
+                    return action;
+                });
+
+                //sortuje wyniki akcji poprzez wynik.
+                if(turn === "X")
+                    availableActions.sort(AIAction.DESCENDING);
+                else
+                    availableActions.sort(AIAction.ASCENDING);
+
+                //wybiera najlepszy, bądź optymalny ruch.
+                var chosenAction = availableActions[0];
+                var next = chosenAction.applyTo(game.currentState);
+                ui.insertAt(chosenAction.movePosition, turn);
+                game.advanceTo(next);
+            }

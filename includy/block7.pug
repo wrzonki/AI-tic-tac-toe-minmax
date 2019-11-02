@@ -1,0 +1,100 @@
+.blok
+    .info
+        .adnotacja
+            h2 Wykorzystanie MINMAX
+            p.
+                Teraz AI potrzebuje sposobu na wykorzystanie informacji dostarczonych przez funkcję 
+                score w podejmowaniu optymalnej decyzji, a tutaj minimax ma pomóc. Podstawową intuicją 
+                algorytmu decyzyjnego minimax jest to, że w danym stanie algorytm będzie myśleć o możliwych ruchach, 
+                a także o ruchach, które może wykonać przeciwnik. Proces ten trwa aż do osiągnięcia stanu końcowego 
+                (nie w grze, ale w procesie myślenia algorytmu). Algorytm następnie wybiera działanie, które prowadzi do najlepszego 
+                stanu terminala według jego wyniku.
+                Algorytm służy do obliczania minimalnej wartości określonego stanu (lub działania 
+                prowadzącego do tego stanu), a działanie polega na tym, że ktoś chce zminimalizować funkcję score, a drugi chce zmaximalizować funkcję score (i dlatego nazywa się minimax ).
+            p.
+                Na Poziomie 0: O chce obliczyć wartość minimax-ów tego stanu, więc zadanie pytania: 
+                Czym są ruchy X, jeśli podjęłam akcję do tego stanu ?! 
+                Aby odpowiedzieć na to pytanie, generuje wszystkie stany, które X może osiągnąć poprzez 
+                wszystkie możliwe działania 
+                (Stany na poziomie 1).
+            p.
+                Na Poziomie 1: O Zastanawia się nad ruchami, jakie może wykonać w odpowiedzi na każde z ruchów X, 
+                więc generuje wszystkie stany, 
+                do których może sięgnąć stamtąd przez wszystkie możliwe działania 
+                (Stany na poziomie 2).
+            p.
+                Na poziomie 2: mając wszystkie stany, 
+                O stara się przemyśleć i zastanawiać się nad wszystkimi ruchami X.
+                Może na tej podstawie wygenerować wszystkie stany, 
+                które X może osiągnąć przez wszystkie możliwe działania.
+            p.
+                Na poziomie 3: O teraz wie, jak może się skończyć grę, zna wszystkie możliwe konfiguracje, 
+                na których gra może się zakończyć 
+                i mieć drzewo ze wszystkimi możliwymi ścieżkami, które może zająć.
+            p.
+                O teraz wykorzystuje funkcję score do obliczania wyniku każdego stanu terminala, do którego może dotrzeć.
+            p.
+                Na Poziomie 2:
+                O wie, o każdym możliwym stanie na tym poziomie, 
+                X zdecyduje się przejść do stanu dziecka (na poziomie 3) z największą liczbą punktów,
+                więc poprosi wartość minimax każdego stanu na poziomie 2 z maksymalną liczbą swoich stanów podrzędnych.
+            p.
+                Na Poziomie 1: O wie, że to jego kolej na grę na tym poziomie. 
+                Chce wybrać stan dziecka (z Poziomu 2), który powoduje, że wynik X 
+                jest możliwie najmniejszy, więc w kopii zapasowej minimax wartość każdego stanu na poziomie 
+                1 minimima minimax wartość swoich stanów podrzędnych.
+            p.
+                Na poziomie 0: O postępuje zgodnie z tym samym rozumowaniem jak
+                na poziomie 2. Powoduje kopie zapasowe wartości minmax stanu głównego z 
+                maksymalną wartością minimax swoich stanów potomnych (poziomy na poziomie 1).
+            p.
+                Algorytm kończy się i zwraca minimalną wartość żądanego stanu na 0 .
+    
+    
+    pre
+        code.language-javascript.
+            //funkcja statusu obliczająca wartość minmax.
+            function minimaxValue(state) {
+                if(state.isTerminal()) {
+                    return Game.score(state);
+                }
+                else {
+                    var stateScore; //zmienna trzymająca wartość minmax.
+
+                    if(state.turn === "X")
+                    // X wyzwala zmienną mniejszą niż możliwa.
+                        stateScore = -1000;
+                    else
+                    // X wyzwala zmienną większą niż możliwa.
+                        stateScore = 1000;
+
+                    var availablePositions = state.emptyCells();
+
+                    //decyzja oparta na obliczonych wartościach.
+                    var availableNextStates = availablePositions.map(function(pos) {
+                        var action = new AIAction(pos);
+
+                        var nextState = action.applyTo(state);
+
+                        return nextState;
+                    });
+
+                    //obliczamy minmax dla następnych kroków.
+                    availableNextStates.forEach(function(nextState) {
+
+                        var nextScore = minimaxValue(nextState);
+
+                        if(state.turn === "X") {
+                            if(nextScore > stateScore)
+                                stateScore = nextScore;
+                            }
+                        else {
+                            if(nextScore < stateScore)
+                                stateScore = nextScore;
+                        }
+                    });
+
+                    //zachowanie wartości.
+                    return stateScore;
+                }
+            }

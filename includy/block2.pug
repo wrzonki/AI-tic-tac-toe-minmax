@@ -1,0 +1,45 @@
+.blok
+    .info
+        .adnotacja
+            p.
+                Komputer musi być w stanie podjąć najlepszą decyzję w danym kroku,
+                jako, że występują w projekcie 3 poziomy trudności. Należy przekazać odpowiednią zmienną dla gracza sztucznego definiując poziom jego gry.
+                Następnie trzeba opracować algorytm Minmax.
+                Ostatnią rzeczą jaką potrzebujemy, jest sposób informowania gracza sztucznego o rozpoczęciu kolejnego etapu rozgrywki.
+                Należy napisać funkcję aby powiadomić go o następnej czynności kalkulując 'poziom inteligencji' gracza sztucznego.
+    pre
+        code.language-javascript.
+            //specyfikowanie poziomu inteligencji (1,2,3)
+            var AI = function(level) {
+
+                //ustalenie poziomu inteligencji
+                var levelOfIntelligence = level;
+
+                var game = {};
+
+                //Prywatna rekursywna funkcja do kalkulacji wartości mimimax.
+                //Status kalkuluje swoje minimax wartości
+                //zwraca wartość liczbową
+                function minimaxValue(state) { ... }
+
+                //Funkcja zmusza komputer do ślepego strzału poprzez losowanie komórki.
+                function takeABlindMove(turn) { ... }
+
+                function takeANoviceMove(turn) { ... }
+
+                //Wymusza na komputerze optymalną decyzję na podstawie minimax
+                    function takeAMasterMove(turn) { ... }
+
+                    this.plays = function(_game){
+                        game = _game;
+                    };
+
+                    //powiadomienie komputera, o tym, że teraz jego ruch.
+                    this.notify = function(turn) {
+                        switch(levelOfIntelligence) {
+                            case "blind": takeABlindMove(turn); break;
+                            case "novice": takeANoviceMove(turn); break;
+                            case "master": takeAMasterMove(turn); break;
+                        }
+                    };
+                };

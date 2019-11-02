@@ -1,0 +1,46 @@
+.blok
+    .info
+        .adnotacja
+            h2 Funkcja wynikowa
+            p.
+                 Teraz podejmujemy pierwszy krok w realizacji naszego algorytmu, który implementuje funkcję score (Funkcja punktacji). 
+                 Funkcja punktacji jest sposobem, w jaki algorytm może znać konkretne działanie, jakie może podjąć. 
+                 Zasadniczo algorytm będzie zadawać sobie pytanie poprzez funkcję minimax: 
+                 "Czy to działanie przyspiesza mi wysoki wynik lub niski wynik?".
+                 Ponieważ kółko i krzyżyk jest grą o sumie zerowej, 
+                 algorytm może spędzić całe życie minimalizując wynik X i równocześnie maksymalizując swój wynik.
+                 Teraz możemy zaprojektować funkcję punktacji, która oblicza tylko wynik X w stanie końcowym. 
+                 Jeśli AI gra z X (co jest w testach), może pracować nad maksymalizacją jego wartości. Z drugiej strony, 
+                 jeśli AI gra z O (co tutaj ma miejsce), działa na minimalizowanie jego wartości.
+            p.
+                Możemy uzasadnić taką funkcję w następujący sposób:
+            p.
+                Jeśli X wygra, dajemy mu 10 punktów (tylko dowolna wartość), ale O (AI) nie powinno to ułatwiać, 
+                musi walczyć, nie powinno się poddać, gdy widzi, że to przepadnie. 
+                Więc algorytm powinien zrobić jak najwięcej ruchów, aby zmusić gracza X do większej ilości ruchów potrzebnych aby wygrać. Więc całkowity wynik dla X powinien wynosić: 10 - oMovesCount .
+            p.
+                Jeśli X traci, dajemy mu wynik w wysokości -10, a O powinien się dostać do tego stanu z możliwie najmniejszą liczbą ruchów, 
+                a jednocześnie osiągając wynik X na jak najniższym poziomie. W ten sposób karze się wzrost 
+                liczby ruchów O poprzez zwiększenie wyniku X. 
+                Całkowity wynik dla X powinien wynosić: -10 + oMovesCount
+            p.
+                Jeśli gra kończy się remisem, całkowity wynik X powinien wynosić: 0
+    pre
+        code.language-javascript.
+            //Funkcja, która kalkuluje wynik gracza X w ostatecznym stanie
+            Game.score = function(_state) {
+                if(_state.result !== "wciaz gra") {
+                    if(_state.result === "X-wygral"){
+                        //x wygral
+                        return 10 - _state.oMovesCount;
+                    }
+                else if(_state.result === "O-wygral") {
+                        //x przegral
+                        return -10 + _state.oMovesCount;
+                    }
+                    else {
+                        //jest remis
+                        return 0;
+                    }
+                }
+            }

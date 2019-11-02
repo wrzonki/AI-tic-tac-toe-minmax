@@ -1,0 +1,113 @@
+.blok
+    .info
+        .adnotacja
+            h2 Budowanie algorytmu sztucznej inteligencji z uzyciem języka Java Script na podstawie gry Kółko i krzyżyk
+            p.
+               Założenia wstępne: 
+               Dwóch graczy (gracz 'X' i gracz 'O') gra na siatce 3 x 3.
+               Gracz 'X' to człowiek, a gracz 'O' to Komputer. 
+               Gracz może umieścić swój znak ('X' lub 'O') w pustej komórce na siatce. 
+               Jeśli dany gracz zaznaczy cały wiersz, kolumnę lub przekątną z jego znakiem, ten gracz wygrywa i gra kończy się.
+               Jeśli siatka jest pełna i nie ma rzędu, kolumny ani przekątnej tego samego znaku, gra kończy się remisem.
+               Gracz powinien starać się wygrać w możliwie najmniejszej liczbie ruchów.
+            p
+                |   Definicja opcji do rozważenia:
+            ul
+                li 
+                    p Skończony zestaw stanów gry. Każdy stan stanowiłby konfiguracje siatki.
+                li
+                    p Skończony zbiór graczy.
+                li
+                    p Skończony zbiór działań.
+                li
+                    p Funkcja przejścia, która monitoruje grę i zwraca kolejny stan gry.
+                li 
+                    p Funkcja sprawdzenia ewentualnego stanu gry pod względem wygranej przegranej lub remisu.
+                li
+                    p Funkcja punktacji, która oblicz wynik końcowy.
+    pre
+        code.language-javascript.
+             //Pokazuje status gry
+            var State = function(old) {
+            
+                //Czyja kolej
+                this.turn = "";
+            
+                //Liczba możliwości komputera
+                this.oMovesCount = 0;
+            
+                //Wynik statusu gry
+                this.result = "still running";
+            
+                //Konfiguracja tabeli
+                this.board = [];
+            
+                //Początek objektu
+                if(typeof old !== "undefined") {
+                    var len = old.board.length;
+                    this.board = new Array(len);
+                    for(var itr = 0 ; itr < len ; itr++) {
+                        this.board[itr] = old.board[itr];
+                    }
+                    this.oMovesCount = old.oMovesCount;
+                    this.result = old.result;
+                    this.turn = old.turn;
+                }
+                //Koniec objektu
+            
+                //Zmiana gracza
+                this.advanceTurn = function() {
+                    this.turn = this.turn === "X" ? "O" : "X";
+                }
+            
+                //Tworzy puste komórki
+                this.emptyCells = function() {
+                    var indxs = [];
+                    for(var itr = 0; itr < 9 ; itr++) {
+                        if(this.board[itr] === "E") {
+                            indxs.push(itr);
+                        }
+                    }
+                    return indxs;
+                }
+            
+                //Funkcja do sprawdzenia czy ktoś aktualnie wygrał
+                this.isTerminal = function() {
+                    var B = this.board;
+            
+                    //sprawdzenie wierszy
+                    for(var i = 0; i <= 6; i = i + 3) {
+                        if(B[i] !== "E" && B[i] === B[i + 1] && B[i + 1] == B[i + 2]) {
+                            this.result = B[i] + "-won"; 
+                            return true;
+                        }
+                    }
+            
+                    //sprawdzenie kolumn
+                    for(var i = 0; i <= 2 ; i++) {
+                        if(B[i] !== "E" && B[i] === B[i + 3] && B[i + 3] === B[i + 6]) {
+                            this.result = B[i] + "-won"; 
+                            return true;
+                        }
+                    }
+            
+                    //sprawdzenie przekątnych
+                    for(var i = 0, j = 4; i <= 2 ; i = i + 2, j = j - 2) {
+                        if(B[i] !== "E" && B[i] == B[i + j] && B[i + j] === B[i + 2*j]) {
+                            this.result = B[i] + "-won";
+                            return true;
+                        }
+                    }
+            
+                    var available = this.emptyCells();
+                    if(available.length == 0) {
+                        //remis
+                        this.result = "remis";
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                };
+            
+            };

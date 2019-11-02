@@ -1,0 +1,12 @@
+var html = $('code').html();
+$('code').html(html.replace(/function/gi, '<span style=\'color:#C8543B;\'>$&</span>'));
+var html = $('code').html();
+$('code').html(html.replace(/this/gi, '<span style=\'color:#6bae44;\'>$&</span>'));
+var html = $('code').html();
+$('code').html(html.replace(/{/gi, '<span style=\'color:#4082ea;\'>$&</span>'));
+var html = $('code').html();
+$('code').html(html.replace(/}/gi, '<span style=\'color:#4082ea;\'>$&</span>'));
+var html = $('code').html();
+$('code').html(html.replace(/\(/gi, '<span style=\'color:#4082ea;\'>$&</span>'));
+var html = $('code').html();
+$('code').html(html.replace(/\)/gi, '<span style=\'color:#4082ea;\'>$&</span>'));

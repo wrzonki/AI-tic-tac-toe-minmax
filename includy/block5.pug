@@ -1,0 +1,73 @@
+.blok
+    .info
+        .adnotacja
+            h2 Gra
+            p.
+                Jest to struktura, która będzie kontrolowała przepływ gry i będzie łączyć wszystko razem w jednej 
+                funkcjonującej jednostce. W takiej strukturze chcemy przechowywać i uzyskiwać dostęp do trzech 
+                rodzajów informacji: sztucznego gracza, 
+                aktualny stan gry i weryfikowanie końcowego stanu gry (remis wygrana porażka start koniec).
+                
+            
+    pre
+        code.language-javascript.
+            //Tworzymy objekt gry
+            var Game = function(autoPlayer) {
+
+                //uruchamia gracza sztucznego.
+                this.ai = autoPlayer;
+
+                //Uruchamia grę na pustej planszy.
+                this.currentState = new State();
+
+                //"E" oznaczać będzie Empty
+                this.currentState.board = ["E", "E", "E",
+                                           "E", "E", "E",
+                                           "E", "E", "E"];
+
+                this.currentState.turn = "X"; //X gra pierwszy
+
+                //Startujemy ze statusem gry.
+                this.status = "beginning";
+
+                //Przejście gry do kolejnego poziomu.
+                this.advanceTo = function(_state) {
+                    this.currentState = _state;
+                    if(_state.isTerminal()) {
+                        this.status = "ended";
+
+                        if(_state.result === "X-wygral")
+                            //X wygrał
+                            ui.switchViewTo("wygral");
+                        else if(_state.result === "O-wygral")
+                            //X lost
+                            ui.switchViewTo("przegral");
+                        else
+                            //Jest remis
+                            ui.switchViewTo("remis");
+                    }
+                    else {
+                        //gra wciąż trwa
+
+                        if(this.currentState.turn === "X") {
+                            ui.switchViewTo("czlowiek");
+                        }
+                        else {
+                            ui.switchViewTo("robot");
+
+                            //Powiadomienie sztucznego gracza, że jest jego kolej
+                            this.ai.notify("O");
+                        }
+                    }
+                };
+
+                //start gry
+                this.start = function() {
+                    if(this.status = "beginning") {
+                        this.advanceTo(this.currentState);
+                        this.status = "running";
+                    }
+                }
+
+            };
+            

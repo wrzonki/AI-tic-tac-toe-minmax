@@ -1,0 +1,123 @@
+@import url("https://fonts.googleapis.com/css?family=Comfortaa:300,400,700");
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,900");
+* {
+  box-sizing: border-box;
+  font-family: 'Comfortaa', cursive; }
+
+.box {
+  width: 100%;
+  height: auto; }
+
+.adnotacja {
+  background: #fff;
+  width: 300px;
+  height: auto;
+  font-family: 'Comfortaa', cursive;
+  font-weight: 100;
+  letter-spacing: -1px;
+  padding: 15px;
+  transition: all 0.2s ease-in;
+  border: 2px solid #000;
+  border-radius: 7px;
+  box-shadow: 10px 10px 0 0 rgba(0, 0, 0, 0.2); }
+  .adnotacja a {
+    text-decoration: none;
+    color: #3b5998;
+    font-weight: 700; }
+  .adnotacja h2 {
+    margin-top: 10px;
+    font-weight: 700;
+    display: block;
+    font-size: 16;
+    line-height: 1.2;
+    -webkit-line-clamp: 4;
+    max-width: 100%;
+    height: 76.8;
+    -webkit-box-orient: vertical;
+    overflow: hidden; }
+  .adnotacja p {
+    margin-top: 10px;
+    line-height: 1em;
+    font-size: 1em; }
+
+.opening {
+  background: #56ab2f;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #a8e063, #56ab2f);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #a8e063, #56ab2f);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }
+  .opening img {
+    width: 20%;
+    height: auto;
+    margin-top: 30px; }
+  .opening .adnotacja {
+    margin: 20px auto;
+    width: 80%; }
+    .opening .adnotacja h3 {
+      font-size: 2em;
+      line-height: 2em; }
+      .opening .adnotacja h3 span {
+        text-decoration: underline; }
+    .opening .adnotacja h4 {
+      font-size: 2em; }
+    .opening .adnotacja hr {
+      width: 70%; }
+    .opening .adnotacja h5 {
+      letter-spacing: -1px;
+      font-size: 2em;
+      color: #000;
+      line-height: 2em; }
+      .opening .adnotacja h5 span {
+        display: inline-block;
+        border-radius: 4px;
+        padding: 0px 2px 0px 2px;
+        background: #388E3C;
+        color: #fff;
+        font-size: 1em;
+        vertical-align: middle; }
+
+.blok {
+  background: #333;
+  width: 100%;
+  height: auto; }
+  .blok pre {
+    background: #333;
+    height: auto;
+    width: 100%;
+    padding: 50px 150px; }
+    .blok pre code {
+      margin: 0 auto;
+      font-size: 1.6em;
+      line-height: 1.1;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400; }
+  .blok .info {
+    width: 100%;
+    padding: 50px;
+    text-align: center; }
+    .blok .info .adnotacja {
+      width: 100%;
+      height: auto;
+      margin: 0 auto; }
+      .blok .info .adnotacja h2 {
+        font-size: 2em;
+        display: block;
+        height: auto;
+        margin-bottom: 30px;
+        font-weight: 100; }
+      .blok .info .adnotacja p {
+        font-size: 1.6em;
+        line-height: 1.6em;
+        text-indent: 7%;
+        font-weight: 100;
+        text-align: justify; }
+      .blok .info .adnotacja ul {
+        margin: 20px 100px; }
+        .blok .info .adnotacja ul li {
+          list-style-type: disc;
+          text-align: left; }
+          .blok .info .adnotacja ul li p {
+            font-weight: 400; }
+
+/*# sourceMappingURL=style.css.map */

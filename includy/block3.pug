@@ -1,0 +1,35 @@
+.blok
+    .info
+        .adnotacja
+            p.
+                Będziemy potrzebować 2 informacje:
+                Pozycję na planszy (jednowymiarowy index wcześniej stworzonej tablicy)
+                i wartość stanu minimax, dzięki której Komputer oszacuje najlepszy ruch.
+                
+    pre
+        code.language-javascript.
+
+            //Tworzy możliwości dla komputera
+            var AIAction = function(pos) {
+
+                //Pozycja na planszy
+                this.movePosition = pos;
+
+                //Wartość minimax
+                this.minimaxVal = 0;
+
+                //apeluje do stanu 1 aby otzymać stan 2
+                //zwraca następny stan
+                this.applyTo = function(state) {
+                    var next = new State(state);
+
+                    //Zaznacza na planszy
+                    next.board[this.movePosition] = state.turn;
+
+                    if(state.turn === "O")
+                        next.oMovesCount++;
+
+                    next.advanceTurn();
+                    return next;
+                }
+            };

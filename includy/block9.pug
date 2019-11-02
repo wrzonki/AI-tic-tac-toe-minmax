@@ -1,0 +1,58 @@
+.blok
+    .info
+        .adnotacja
+            h2 Średniak
+            p.
+                Średniak to gracz posiadający szanse na optymalny ruch. Możemy modelować to z prawdopodobieństwem wskazującym na optymalny ruch w wysokości 40% oraz sub-optymalny rowny 60%.
+
+
+    pre
+        code.language-javascript.
+            var P = 40;
+            if(Math.random()*100 <= P) {
+            }
+            else {
+
+            }
+            /*
+
+            function takeANoviceMove(turn) {
+                var available = game.currentState.emptyCells();
+                var availableActions = available.map(function(pos) {
+                    var action =  new AIAction(pos); 
+
+                    var nextState = action.applyTo(game.currentState);
+
+                    action.minimaxVal = minimaxValue(nextState);
+
+                    return action;
+                });
+
+                //sortuje poprzez wynik
+                if(turn === "X")
+                    availableActions.sort(AIAction.DESCENDING);
+                else
+                    availableActions.sort(AIAction.ASCENDING);
+
+
+                //losuje do 40
+                var chosenAction;
+                if(Math.random()*100 <= 40) {
+                    chosenAction = availableActions[0];
+                }
+                else {
+                    if(availableActions.length >= 2) {
+                        //jesli 2 nieoptymalne
+                        chosenAction = availableActions[1];
+                    }
+                    else {
+                        //jesli 1 możliwa
+                        chosenAction = availableActions[0];
+                    }
+                }
+                var next = chosenAction.applyTo(game.currentState);
+
+                ui.insertAt(chosenAction.movePosition, turn);
+
+                game.advanceTo(next);
+            };

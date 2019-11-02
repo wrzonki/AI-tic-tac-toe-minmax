@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css?family=Comfortaa:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,900');
+*{
+    box-sizing: border-box;
+    font-family: 'Comfortaa', cursive;
+}
+
+
+$szerokosc-boxa:300px;
+$font-size:16;
+$line-height:1.2;
+$linnie-do-pokazania:4;
+
+.box{
+    width: 100%;
+    height: auto;
+}
+.adnotacja{
+    background: #fff;
+    width:$szerokosc-boxa;
+    height: auto;
+    font-family: 'Comfortaa', cursive;
+    font-weight: 100;
+    letter-spacing: -1px;
+    padding: 15px;
+    transition: all 0.2s ease-in;
+    border:2px solid #000;
+    border-radius: 7px;
+    box-shadow: 10px 10px 0 0 rgba(0, 0,0,0.2);
+    a{
+        text-decoration: none;
+        color:#3b5998;
+        font-weight: 700;
+    }
+    h2{
+        margin-top: 10px;
+        font-weight: 700;
+        display: block;
+        font-size: $font-size;
+        line-height: $line-height;
+        -webkit-line-clamp: $linnie-do-pokazania;
+        max-width: 100%;
+        height: $font-size*$line-height*$linnie-do-pokazania;
+        -webkit-box-orient:vertical;
+        overflow:hidden;
+    }
+    p{
+        margin-top: 10px;
+        line-height: 1em;
+        font-size: 1em;
+    }
+}
+.opening{
+    background: #56ab2f;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #a8e063, #56ab2f);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #a8e063, #56ab2f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    img{
+        width: 20%;
+        height: auto;
+        margin-top: 30px;
+    }
+    .adnotacja{
+        margin: 20px auto;
+        width: 80%;
+        h3{
+            font-size: 2em;
+            line-height: 2em;
+            span{
+                text-decoration: underline;
+            }
+        }
+        h4{
+            font-size: 2em;
+        }
+        hr{
+            width: 70%;
+        }
+        h5{
+            letter-spacing: -1px;
+            font-size: 2em;
+            color:#000;
+            line-height: 2em;
+            span{
+                display: inline-block;
+                border-radius: 4px;
+                padding: 0px 2px 0px 2px;
+                background: #388E3C;
+                color:#fff;
+                font-size: 1em;
+                vertical-align: middle;
+            }
+        }
+    }
+}
+.blok{
+    background: #333;
+    width: 100%;
+    height: auto;
+    pre{
+        background: #333;
+        height: auto;
+        width: 100%;
+        padding: 50px 150px;
+        code{
+            margin:0 auto;
+            font-size: 1.6em;
+            line-height: 1.1;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+        }
+    }
+    .info{
+        width: 100%;
+        padding: 50px;
+        text-align: center;
+        .adnotacja{
+            width: 100%;
+            height: auto;
+            margin: 0 auto;
+            h2{
+                font-size: 2em;
+                display: block;
+                height: auto;
+                margin-bottom: 30px;
+                font-weight: 100;
+            }
+            p{
+                font-size: 1.6em;
+                line-height: 1.6em;
+                text-indent: 7%;
+                font-weight: 100;
+                text-align: justify;
+            }
+            ul{
+                margin:20px 100px;
+                li{
+                    list-style-type:disc;
+                    text-align: left;
+                    p{
+                        font-weight: 400;
+                    }
+                }
+            }
+        }
+    }
+}

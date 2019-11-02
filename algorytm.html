@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Algorytm kółko i krzyżyk</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div class="box opening">
+      <div class="row">
+        <div class="col s12 center">
+          <div class="adnotacja">
+            <h3> Projekt: <span>"Kółko i Krzyżyk"</span></h3>
+            <h4>Prezentacja algorytmu</h4>
+
+          </div>
+        </div>
+      </div>
+      <div class="blok">
+        <div class="info">
+          <div class="adnotacja">
+            <h2>Budowanie algorytmu sztucznej inteligencji z uzyciem języka Java Script na podstawie gry Kółko i krzyżyk</h2>
+            <p>
+              Założenia wstępne: 
+              Dwóch graczy (gracz 'X' i gracz 'O') gra na siatce 3 x 3.
+              Gracz 'X' to człowiek, a gracz 'O' to Komputer. 
+              Gracz może umieścić swój znak ('X' lub 'O') w pustej komórce na siatce. 
+              Jeśli dany gracz zaznaczy cały wiersz, kolumnę lub przekątną z jego znakiem, ten gracz wygrywa i gra kończy się.
+              Jeśli siatka jest pełna i nie ma rzędu, kolumny ani przekątnej tego samego znaku, gra kończy się remisem.
+              Gracz powinien starać się wygrać w możliwie najmniejszej liczbie ruchów.
+            </p>
+            <p>  Definicja opcji do rozważenia:</p>
+            <ul>
+              <li> 
+                <p>Skończony zestaw stanów gry. Każdy stan stanowiłby konfiguracje siatki.</p>
+              </li>
+              <li>
+                <p>Skończony zbiór graczy.</p>
+              </li>
+              <li>
+                <p>Skończony zbiór działań.</p>
+              </li>
+              <li>
+                <p>Funkcja przejścia, która monitoruje grę i zwraca kolejny stan gry.</p>
+              </li>
+              <li> 
+                <p>Funkcja sprawdzenia ewentualnego stanu gry pod względem wygranej przegranej lub remisu.</p>
+              </li>
+              <li>
+                <p>Funkcja punktacji, która oblicz wynik końcowy.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <pre><code class="language-javascript"> //Pokazuje status gry
+var State = function(old) {
+
+    //Czyja kolej
+    this.turn = "";
+
+    //Liczba możliwości komputera
+    this.oMovesCount = 0;
+
+    //Wynik statusu gry
+    this.result = "still running";
+
+    //Konfiguracja tabeli
+    this.board = [];
+
+    //Początek objektu
+    if(typeof old !== "undefined") {
+        var len = old.board.length;
+        this.board = new Array(len);
+        for(var itr = 0 ; itr < len ; itr++) {
+            this.board[itr] = old.board[itr];
+        }
+        this.oMovesCount = old.oMovesCount;
+        this.result = old.result;
+        this.turn = old.turn;
+    }
+    //Koniec objektu
+
+    //Zmiana gracza
+    this.advanceTurn = function() {
+        this.turn = this.turn === "X" ? "O" : "X";
+    }
+
+    //Tworzy puste komórki
+    this.emptyCells = function() {
+        var indxs = [];
+        for(var itr = 0; itr < 9 ; itr++) {
+            if(this.board[itr] === "E") {
+                indxs.push(itr);
+            }
+        }
+        return indxs;
+    }
+
+    //Funkcja do sprawdzenia czy ktoś aktualnie wygrał
+    this.isTerminal = function() {
+        var B = this.board;
+
+        //sprawdzenie wierszy
+        for(var i = 0; i <= 6; i = i + 3) {
+            if(B[i] !== "E" && B[i] === B[i + 1] && B[i + 1] == B[i + 2]) {
+                this.result = B[i] + "-won"; 
+                return true;
+            }
+        }
+
+        //sprawdzenie kolumn
+        for(var i = 0; i <= 2 ; i++) {
+            if(B[i] !== "E" && B[i] === B[i + 3] && B[i + 3] === B[i + 6]) {
+                this.result = B[i] + "-won"; 
+                return true;
+            }
+        }
+
+        //sprawdzenie przekątnych
+        for(var i = 0, j = 4; i <= 2 ; i = i + 2, j = j - 2) {
+            if(B[i] !== "E" && B[i] == B[i + j] && B[i + j] === B[i + 2*j]) {
+                this.result = B[i] + "-won";
+                return true;
+            }
+        }
+
+        var available = this.emptyCells();
+        if(available.length == 0) {
+            //remis
+            this.result = "remis";
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
+
+};</code></pre>
+      </div>
+      <div class="blok">
+        <div class="info">
+          <div class="adnotacja">
+            <p>
+              Komputer musi być w stanie podjąć najlepszą decyzję w danym kroku,
+              jako, że występują w projekcie 3 poziomy trudności. Należy przekazać odpowiednią zmienną dla gracza sztucznego definiując poziom jego gry.
+              Następnie trzeba opracować algorytm Minmax.
+              Ostatnią rzeczą jaką potrzebujemy, jest sposób informowania gracza sztucznego o rozpoczęciu kolejnego etapu rozgrywki.
+              Należy napisać funkcję aby powiadomić go o następnej czynności kalkulując 'poziom inteligencji' gracza sztucznego.
+            </p>
+          </div>
+        </div>
+        <pre><code class="language-javascript">//specyfikowanie poziomu inteligencji (1,2,3)
+var AI = function(level) {
+
+    //ustalenie poziomu inteligencji
+    var levelOfIntelligence = level;
+
+    var game = {};
+
+    //Prywatna rekursywna funkcja do kalkulacji wartości mimimax.
+    //Status kalkuluje swoje minimax wartości
+    //zwraca wartość liczbową
+    function minimaxValue(state) { ... }
+
+    //Funkcja zmusza komputer do ślepego strzału poprzez losowanie komórki.
+    function takeABlindMove(turn) { ... }
+
+    function takeANoviceMove(turn) { ... }
+
+    //Wymusza na komputerze optymalną decyzję na podstawie minimax
+        function takeAMasterMove(turn) { ... }
+
+        this.plays = function(_game){
+            game = _game;
+        };
+
+        //powiadomienie komputera, o tym, że teraz jego ruch.
+        this.notify = function(turn) {
+            switch(levelOfIntelligence) {
+                case "blind": takeABlindMove(turn); break;
+                case "novice": takeANoviceMove(turn); break;
+                case "master": takeAMasterMove(turn); break;
+            }
+        };
+    };</code></pre>
+      </div>
+      <div class="blok">
+        <div class="info">
+          <div class="adnotacja">
+            <p>
+              Będziemy potrzebować 2 informacje:
+              Pozycję na planszy (jednowymiarowy index wcześniej stworzonej tablicy)
+              i wartość stanu minimax, dzięki której Komputer oszacuje najlepszy ruch.
+              
+            </p>
+          </div>
+        </div>
+        <pre><code class="language-javascript">//Tworzy możliwości dla komputera
+var AIAction = function(pos) {
+
+    //Pozycja na planszy
+    this.movePosition = pos;
+
+    //Wartość minimax
+    this.minimaxVal = 0;
+
+    //apeluje do stanu 1 aby otzymać stan 2
+    //zwraca następny stan
+    this.applyTo = function(state) {
+        var next = new State(state);
+
+        //Zaznacza na planszy
+        next.board[this.movePosition] = state.turn;
+
+        if(state.turn === "O")
+            next.oMovesCount++;
+
+        next.advanceTurn();
+        return next;
+    }
+};</code></pre>
+      </div>
+      <div class="blok">
+        <div class="info">
+          <div class="adnotacja">
+            <h2>Czas na algorytm Minmax</h2>
+            <p>
+              Tak jak wcześniej zostało to powiedziane, że AI wykorzystuje wartość minimax, aby wybrać najlepszą możliwość z listy dostępnych akcji, 
+              co wymaga posortowania możliwości w oparciu o wartość minmax-u. 
+              W tym celu udostępniamy dwie publiczne funkcje statyczne, które możemy użyć jako funkcję porównania. Aby przejść do funkcji ( Array.prototype.sort ) 
+              w celu sortowania listy działań zarówno w kierunku rosnącym jak i malejącym.
+              
+            </p>
+          </div>
+        </div>
+        <pre><code class="language-javascript">//metoda statyczna definiująca zasadę sortowania
+//zwraca liczby -1.1 lub 0
+AIAction.ASCENDING = function(firstAction, secondAction) {
+    if(firstAction.minimaxVal < secondAction.minimaxVal)
+        return -1; //wskazuje, że pierwsza akcja jest przed drugą.
+    else if(firstAction.minimaxVal > secondAction.minimaxVal)
+        return 1; //wskazuje, że druga akcja jest przed pierwszą.
+    else
+        return 0; //wskazuje remis.
+}
+
+//to samo co wyżej tylko inny znak '>'
+AIAction.DESCENDING = function(firstAction, secondAction) {
+    if(firstAction.minimaxVal > secondAction.minimaxVal)
+        return -1; 
+    else if(firstAction.minimaxVal < secondAction.minimaxVal)
+        return 1; 
+    else
+        return 0;
+}</code></pre>
+      </div>
+      <div class="blok">
+        <div class="info">
+          <div class="adnotacja">
+            <h2>Gra</h2>
+            <p>
+              Jest to struktura, która będzie kontrolowała przepływ gry i będzie łączyć wszystko razem w jednej 
+              funkcjonującej jednostce. W takiej strukturze chcemy przechowywać i uzyskiwać dostęp do trzech 
+              rodzajów informacji: sztucznego gracza, 
+              aktualny stan gry i weryfikowanie końcowego stanu gry (remis wygrana porażka start koniec).
+              
+              
+            </p>
+          </div>
+        </div>
+        <pre><code class="language-javascript">//Tworzymy objekt gry
+var Game = function(autoPlayer) {
+
+    //uruchamia gracza sztucznego.
+    this.ai = autoPlayer;
+
+    //Uruchamia grę na pustej planszy.
+    this.currentState = new State();
+
+    //"E" oznaczać będzie Empty
+    this.currentState.board = ["E", "E", "E",
+                               "E", "E", "E",
+                               "E", "E", "E"];
+
+    this.currentState.turn = "X"; //X gra pierwszy
+
+    //Startujemy ze statusem gry.
+    this.status = "beginning";
+
+    //Przejście gry do kolejnego poziomu.
+    this.advanceTo = function(_state) {
+        this.currentState = _state;
+        if(_state.isTerminal()) {
+            this.status = "ended";
+
+            if(_state.result === "X-wygral")
+                //X wygrał
+                ui.switchViewTo("wygral");
+            else if(_state.result === "O-wygral")
+                //X lost
+                ui.switchViewTo("przegral");
+            else
+                //Jest remis
+                ui.switchViewTo("remis");
+        }
+        else {
+            //gra wciąż trwa
+
+            if(this.currentState.turn === "X") {
+                ui.switchViewTo("czlowiek");
+            }
+            else {
+                ui.switchViewTo("robot");
+
+                //Powiadomienie sztucznego gracza, że jest jego kolej
+                this.ai.notify("O");
+            }
+        }
+    };
+
+    //start gry
+    this.start = function() {
+        if(this.status = "beginning") {
+            this.advanceTo(this.currentState);
+            this.status = "running";
+        }
+    }
+
+};</code></pre>
+      </div>
+      <div class="blok">
+        <div class="info">
+          <div class="adnotacja">
+            <h2>Funkcja wynikowa</h2>
+            <p>
+              Teraz podejmujemy pierwszy krok w realizacji naszego algorytmu, który implementuje funkcję score (Funkcja punktacji). 
+              Funkcja punktacji jest sposobem, w jaki algorytm może znać konkretne działanie, jakie może podjąć. 
+              Zasadniczo algorytm będzie zadawać sobie pytanie poprzez funkcję minimax: 
+              "Czy to działanie przyspiesza mi wysoki wynik lub niski wynik?".
+              Ponieważ kółko i krzyżyk jest grą o sumie zerowej, 
+              algorytm może spędzić całe życie minimalizując wynik X i równocześnie maksymalizując swój wynik.
+              Teraz możemy zaprojektować funkcję punktacji, która oblicza tylko wynik X w stanie końcowym. 
+              Jeśli AI gra z X (co jest w testach), może pracować nad maksymalizacją jego wartości. Z drugiej strony, 
+              jeśli AI gra z O (co tutaj ma miejsce), działa na minimalizowanie jego wartości.
+            </p>
+            <p>Możemy uzasadnić taką funkcję w następujący sposób:</p>
+            <p>
+              Jeśli X wygra, dajemy mu 10 punktów (tylko dowolna wartość), ale O (AI) nie powinno to ułatwiać, 
+              musi walczyć, nie powinno się poddać, gdy widzi, że to przepadnie. 
+              Więc algorytm powinien zrobić jak najwięcej ruchów, aby zmusić gracza X do większej ilości ruchów potrzebnych aby wygrać. Więc całkowity wynik dla X powinien wynosić: 10 - oMovesCount .
+            </p>
+            <p>
+              Jeśli X traci, dajemy mu wynik w wysokości -10, a O powinien się dostać do tego stanu z możliwie najmniejszą liczbą ruchów, 
+              a jednocześnie osiągając wynik X na jak najniższym poziomie. W ten sposób karze się wzrost 
+              liczby ruchów O poprzez zwiększenie wyniku X. 
+              Całkowity wynik dla X powinien wynosić: -10 + oMovesCount
+            </p>
+            <p>Jeśli gra kończy się remisem, całkowity wynik X powinien wynosić: 0</p>
+          </div>
+        </div>
+        <pre><code class="language-javascript">//Funkcja, która kalkuluje wynik gracza X w ostatecznym stanie
+Game.score = function(_state) {
+    if(_state.result !== "wciaz gra") {
+        if(_state.result === "X-wygral"){
+            //x wygral
+            return 10 - _state.oMovesCount;
+        }
+    else if(_state.result === "O-wygral") {
+            //x przegral
+            return -10 + _state.oMovesCount;
+        }
+        else {
+            //jest remis
+            return 0;
+        }
+    }
+}</code></pre>
+      </div>
+      <div class="blok">
+        <div class="info">
+          <div class="adnotacja">
+            <h2>Wykorzystanie MINMAX</h2>
+            <p>
+              Teraz AI potrzebuje sposobu na wykorzystanie informacji dostarczonych przez funkcję 
+              score w podejmowaniu optymalnej decyzji, a tutaj minimax ma pomóc. Podstawową intuicją 
+              algorytmu decyzyjnego minimax jest to, że w danym stanie algorytm będzie myśleć o możliwych ruchach, 
+              a także o ruchach, które może wykonać przeciwnik. Proces ten trwa aż do osiągnięcia stanu końcowego 
+              (nie w grze, ale w procesie myślenia algorytmu). Algorytm następnie wybiera działanie, które prowadzi do najlepszego 
+              stanu terminala według jego wyniku.
+              Algorytm służy do obliczania minimalnej wartości określonego stanu (lub działania 
+              prowadzącego do tego stanu), a działanie polega na tym, że ktoś chce zminimalizować funkcję score, a drugi chce zmaximalizować funkcję score (i dlatego nazywa się minimax ).
+            </p>
+            <p>
+              Na Poziomie 0: O chce obliczyć wartość minimax-ów tego stanu, więc zadanie pytania: 
+              Czym są ruchy X, jeśli podjęłam akcję do tego stanu ?! 
+              Aby odpowiedzieć na to pytanie, generuje wszystkie stany, które X może osiągnąć poprzez 
+              wszystkie możliwe działania 
+              (Stany na poziomie 1).
+            </p>
+            <p>
+              Na Poziomie 1: O Zastanawia się nad ruchami, jakie może wykonać w odpowiedzi na każde z ruchów X, 
+              więc generuje wszystkie stany, 
+              do których może sięgnąć stamtąd przez wszystkie możliwe działania 
+              (Stany na poziomie 2).
+            </p>
+            <p>
+              Na poziomie 2: mając wszystkie stany, 
+              O stara się przemyśleć i zastanawiać się nad wszystkimi ruchami X.
+              Może na tej podstawie wygenerować wszystkie stany, 
+              które X może osiągnąć przez wszystkie możliwe działania.
+            </p>
+            <p>
+              Na poziomie 3: O teraz wie, jak może się skończyć grę, zna wszystkie możliwe konfiguracje, 
+              na których gra może się zakończyć 
+              i mieć drzewo ze wszystkimi możliwymi ścieżkami, które może zająć.
+            </p>
+            <p>O teraz wykorzystuje funkcję score do obliczania wyniku każdego stanu terminala, do którego może dotrzeć.</p>
+            <p>
+              Na Poziomie 2:
+              O wie, o każdym możliwym stanie na tym poziomie, 
+              X zdecyduje się przejść do stanu dziecka (na poziomie 3) z największą liczbą punktów,
+              więc poprosi wartość minimax każdego stanu na poziomie 2 z maksymalną liczbą swoich stanów podrzędnych.
+            </p>
+            <p>
+              Na Poziomie 1: O wie, że to jego kolej na grę na tym poziomie. 
+              Chce wybrać stan dziecka (z Poziomu 2), który powoduje, że wynik X 
+              jest możliwie najmniejszy, więc w kopii zapasowej minimax wartość każdego stanu na poziomie 
+              1 minimima minimax wartość swoich stanów podrzędnych.
+            </p>
+            <p>
+              Na poziomie 0: O postępuje zgodnie z tym samym rozumowaniem jak
+              na poziomie 2. Powoduje kopie zapasowe wartości minmax stanu głównego z 
+              maksymalną wartością minimax swoich stanów potomnych (poziomy na poziomie 1).
+            </p>
+            <p>
+              Algorytm kończy się i zwraca minimalną wartość żądanego stanu na 0 .
+              
+              
+            </p>
+          </div>
+        </div>
+        <pre><code class="language-javascript">//funkcja statusu obliczająca wartość minmax.
+function minimaxValue(state) {
+    if(state.isTerminal()) {
+        return Game.score(state);
+    }
+    else {
+        var stateScore; //zmienna trzymająca wartość minmax.
+
+        if(state.turn === "X")
+        // X wyzwala zmienną mniejszą niż możliwa.
+            stateScore = -1000;
+        else
+        // X wyzwala zmienną większą niż możliwa.
+            stateScore = 1000;
+
+        var availablePositions = state.emptyCells();
+
+        //decyzja oparta na obliczonych wartościach.
+        var availableNextStates = availablePositions.map(function(pos) {
+            var action = new AIAction(pos);
+
+            var nextState = action.applyTo(state);
+
+            return nextState;
+        });
+
+        //obliczamy minmax dla następnych kroków.
+        availableNextStates.forEach(function(nextState) {
+
+            var nextScore = minimaxValue(nextState);
+
+            if(state.turn === "X") {
+                if(nextScore > stateScore)
+                    stateScore = nextScore;
+                }
+            else {
+                if(nextScore < stateScore)
+                    stateScore = nextScore;
+            }
+        });
+
+        //zachowanie wartości.
+        return stateScore;
+    }
+}</code></pre>
+      </div>
+      <div class="blok">
+        <div class="info">
+          <div class="adnotacja">
+            <h2>Tworzenie poziomu mistrza.</h2>
+            <p>
+              Gracz, który zawsze wykonuje optymalny ruch, jest bez wątpienia mistrzem. 
+              W związku z tym implementujemy funkcję takeAMasterMove, aby umożliwić algorytmowi zawsze wybrać optymalne działanie. Jest to najtrudniejszy poziom gry, ponieważ można udowodnić, 
+              że gracz, który gra optymalnie przez cały czas, nie może przegrać. 
+              Nasza najlepsza szansa na tym poziomie prowadzi do remisu.
+              
+              
+            </p>
+          </div>
+        </div>
+        <pre><code class="language-javascript">//tworzy z komputera - mistrza
+function takeAMasterMove(turn) {
+    var available = game.currentState.emptyCells();
+
+    //kalkuluje wyniki dla każdej możliwej akcji.
+    var availableActions = available.map(function(pos) {
+        var action =  new AIAction(pos); //create the action object
+
+        //nowy status poprzez podjęcie ruchu.
+        var next = action.applyTo(game.currentState);
+        action.minimaxVal = minimaxValue(next);
+        return action;
+    });
+
+    //sortuje wyniki akcji poprzez wynik.
+    if(turn === "X")
+        availableActions.sort(AIAction.DESCENDING);
+    else
+        availableActions.sort(AIAction.ASCENDING);
+
+    //wybiera najlepszy, bądź optymalny ruch.
+    var chosenAction = availableActions[0];
+    var next = chosenAction.applyTo(game.currentState);
+    ui.insertAt(chosenAction.movePosition, turn);
+    game.advanceTo(next);
+}</code></pre>
+      </div>
+      <div class="blok">
+        <div class="info">
+          <div class="adnotacja">
+            <h2>Średniak</h2>
+            <p>
+              Średniak to gracz posiadający szanse na optymalny ruch. Możemy modelować to z prawdopodobieństwem wskazującym na optymalny ruch w wysokości 40% oraz sub-optymalny rowny 60%.
+              
+              
+            </p>
+          </div>
+        </div>
+        <pre><code class="language-javascript">var P = 40;
+if(Math.random()*100 <= P) {
+}
+else {
+
+}
+/*
+
+function takeANoviceMove(turn) {
+    var available = game.currentState.emptyCells();
+    var availableActions = available.map(function(pos) {
+        var action =  new AIAction(pos); 
+
+        var nextState = action.applyTo(game.currentState);
+
+        action.minimaxVal = minimaxValue(nextState);
+
+        return action;
+    });
+
+    //sortuje poprzez wynik
+    if(turn === "X")
+        availableActions.sort(AIAction.DESCENDING);
+    else
+        availableActions.sort(AIAction.ASCENDING);
+
+
+    //losuje do 40
+    var chosenAction;
+    if(Math.random()*100 <= 40) {
+        chosenAction = availableActions[0];
+    }
+    else {
+        if(availableActions.length >= 2) {
+            //jesli 2 nieoptymalne
+            chosenAction = availableActions[1];
+        }
+        else {
+            //jesli 1 możliwa
+            chosenAction = availableActions[0];
+        }
+    }
+    var next = chosenAction.applyTo(game.currentState);
+
+    ui.insertAt(chosenAction.movePosition, turn);
+
+    game.advanceTo(next);
+};</code></pre>
+      </div>
+      <div class="blok">
+        <div class="info">
+          <div class="adnotacja">
+            <h2>Nowicjusz</h2>
+            <p>
+              Zakładamy, że gracz sztuczny nie wie nic o grze i nie ma możliwości rozróżnienia, 
+              która akcja jest lepsza od drugiej. 
+              
+              
+            </p>
+          </div>
+        </div>
+        <pre><code class="language-javascript">function takeABlindMove(turn) {
+    var available = game.currentState.emptyCells();
+    var randomCell = available[Math.floor(Math.random() * available.length)];
+    var action = new AIAction(randomCell);
+
+    var next = action.applyTo(game.currentState);
+
+    ui.insertAt(randomCell, turn);
+
+    game.advanceTo(next);
+}</code></pre>
+      </div>
+      <div class="blok">
+        <div class="info">
+          <div class="adnotacja"><a href="play/index.html">
+              <h1>Zagraj</h1></a></div>
+        </div>
+      </div>
+    </div>
+    <script src="prism.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  </body>
+</html>

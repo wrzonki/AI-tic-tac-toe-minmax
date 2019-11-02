@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Kółko i Krzyżyk</title>
+        <link rel = 'stylesheet' type = 'text/css' href = 'styles/ui.css'>
+        <meta charset="utf-8"/>
+        <style>
+        .control a{text-decoration: none;margin-top:30px;color:green;line-height: 2em;}
+        </style>
+    </head>
+
+    <body>
+        <div class = 'main-container' style='margin-top:50px;'>
+            <div class = 'board'>
+                <!-- data-indx following cell divs represents cell index in 1D array representation -->
+                <div class='cell' data-indx = "0" ></div>
+                <div class='cell' data-indx = "1" ></div>
+                <div class='cell' data-indx = "2" ></div>
+                <div class='cell' data-indx = "3" ></div>
+                <div class='cell' data-indx = "4" ></div>
+                <div class='cell' data-indx = "5" ></div>
+                <div class='cell' data-indx = "6" ></div>
+                <div class='cell' data-indx = "7" ></div>
+                <div class='cell' data-indx = "8" ></div>
+            </div>
+
+            <div class = 'control'>
+                <!-- div.intial displays the starting controls -->
+                <div class = 'intial'>
+                    <div class = 'difficulty'>
+                        <span class = 'level not-selected' id = "blind">Nowicjusz</span>
+                        <span class = 'level not-selected' id = "novice">Średniak</span>
+                        <span class = 'level not-selected' id = "master">Mistrz</span>
+                    </div>
+
+                    <div class='start'> Start </div>
+                </div>
+
+                <!-- div.ingame displays in-game messages and controls -->
+                <div class = 'ingame' id="human">Twoja kolej ...</div>
+                <div class = 'ingame' id="ai">
+                    <img src = "imgs/robot.png" id = "robot" class = "robot" />
+                    <p>Waint for it ...</p>
+                </div>
+                <div class = 'ingame' id="won">Wygrałeś!<br/><a href='index.html'>Jeszcze raz</a></div>
+                <div class = 'ingame' id="lost">Przegrałeś!<br/><a href='index.html'>Jeszcze raz</a></div>
+                <div class = 'ingame' id="draw">Jest Remis<br/><a href='index.html'>Jeszcze raz</a></div>
+            </div>
+        </div>
+
+        <script src = "scripts/jquery-1.10.1.min.js"></script>
+        <script src = "scripts/ui.js"></script>
+        <script src = "scripts/game.js"></script>
+        <script src = "scripts/ai.js"></script>
+        <script src = "scripts/control.js"></script>
+    </body>
+</html>
